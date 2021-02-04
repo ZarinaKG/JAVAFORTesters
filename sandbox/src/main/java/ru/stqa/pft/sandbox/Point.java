@@ -4,7 +4,7 @@ public class Point {
 
   double a;
   double b;
-
+//Constructor
   public Point(double a, double b){
     this.a = a;
     this.b = b;
