@@ -17,7 +17,7 @@ public class ContactHelper extends BaseHelper {
   }
 
   public void fillContactForm(PersonalData personalData) {
-    type(By.name("firstname"),personalData.getName() + new Date());
+    type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
     type(By.name("company"),personalData.getCompany());
     click(By.name("address"));
@@ -25,22 +25,12 @@ public class ContactHelper extends BaseHelper {
     type(By.name("email"),personalData.getEmail());
     click(By.name("bday"));
     new Select(wd.findElement(By.name("bday"))).selectByVisibleText(personalData.getDay());
-    //bday.selectByVisibleText(personalData.getDay());
-
-
-    //click(By.xpath("//option[@value='22']"));
-    //click(By.name("bmonth"));
     new Select(wd.findElement(By.name("bmonth"))).selectByVisibleText(personalData.getMonth());
-    //click(By.xpath("//option[@value='May']"));
     type(By.name("byear"),personalData.getYear());
     type(By.name("address2"),personalData.getAddress());
   }
 
-  public void fillGroupForm(GroupData groupData) {
-    type(By.name("group_name"),groupData.getName());
-    type(By.name("group_header"),groupData.getHeader());
-    type(By.name("group_footer"),groupData.getFooter());
-  }
+
 
   public void returnToHomePage() {
     click(By.linkText("home page"));
@@ -52,5 +42,26 @@ public class ContactHelper extends BaseHelper {
 
   public void initContactCreation() {
     click(By.linkText("add new"));
+  }
+  public void getContactLists() {
+    click(By.linkText("home"));
+  }
+  public int getTotalNumberofContact(){
+    String lastContact=wd.findElement(By.id("search_count")).getText();
+    int totalNumberOfContact = Integer.parseInt(lastContact);
+    return totalNumberOfContact;
+  }
+  public void selectContact(int n) {
+    click(By.cssSelector("input[type='checkbox'][value='"+n+"']"));
+  }
+  public void deleteContact() {
+    click(By.cssSelector("input[type='button'][value='Delete']"));
+    wd.switchTo().alert().accept();
+  }
+  public void editContact(int n){
+    click(By.cssSelector("a[href^='edit.php?id="+n+"']"));
+  }
+  public void submitContactModification() {
+    click(By.cssSelector("input[type='submit'][value='Update']"));
   }
 }

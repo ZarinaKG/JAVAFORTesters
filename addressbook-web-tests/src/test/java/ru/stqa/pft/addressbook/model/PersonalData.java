@@ -1,15 +1,15 @@
 package ru.stqa.pft.addressbook.model;
 
 public class PersonalData {
-  private final String name;
-  private final String surname;
-  private final String company;
-  private final String tel;
-  private final String email;
-  private final String day;
-  private final String month;
-  private final String year;
-  private final String address;
+  private  String name;
+  private  String surname;
+  private  String company;
+  private  String tel;
+  private  String email;
+  private  String day;
+  private  String month;
+  private  String year;
+  private  String address;
 
   public PersonalData(String name, String surname, String company, String tel, String email, String day, String month, String year, String address) {
     this.name = name;
