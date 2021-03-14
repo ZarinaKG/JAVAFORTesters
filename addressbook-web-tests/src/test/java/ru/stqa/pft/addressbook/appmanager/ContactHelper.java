@@ -4,10 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 import static java.lang.Thread.sleep;
 
@@ -20,15 +22,11 @@ public class ContactHelper extends BaseHelper {
   public void fillContactForm(PersonalData personalData) {
     type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
-    type(By.name("company"),personalData.getCompany());
-    click(By.name("address"));
-    type(By.name("home"),personalData.getTel());
-    type(By.name("email"),personalData.getEmail());
-    click(By.name("bday"));
-    new Select(wd.findElement(By.name("bday"))).selectByVisibleText(personalData.getDay());
-    new Select(wd.findElement(By.name("bmonth"))).selectByVisibleText(personalData.getMonth());
-    type(By.name("byear"),personalData.getYear());
-    type(By.name("address2"),personalData.getAddress());
+    type(By.name("lastname"),personalData.getGroup());
+
+    if (isElementPresent(By.name("new_group"))){
+      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(personalData.getGroup());
+    }
   }
 
 

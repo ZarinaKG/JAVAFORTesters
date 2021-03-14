@@ -13,7 +13,7 @@ public class ContactModificationTest extends TestBase {
     int contactNumber= app.getContactHelper().getTotalNumberofContact();
     app.getContactHelper().selectContact(contactNumber);
     app.getContactHelper().editContact(contactNumber);
-    PersonalData personalData = new PersonalData("Nicole", "Mustermann1" + new Date(), "MiniCompany1", "0049177558853", "test1@google.com", "5", "May", "1983", "Bahnhof Street 5\nBad-Durkheim");
+    PersonalData personalData = new PersonalData("Nicole", "Mustermann1",null);
     app.getContactHelper().fillContactForm(personalData);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
