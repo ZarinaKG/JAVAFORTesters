@@ -52,15 +52,16 @@ public class ContactHelper extends BaseHelper {
     int totalNumberOfContact = Integer.parseInt(lastContact);
     return totalNumberOfContact;
   }
-  public void selectContact(int n) {
-    click(By.cssSelector("input[type='checkbox'][value='"+n+"']"));
+  public void selectFirstContact() {
+    click(By.cssSelector("input[type='checkbox']"));
   }
   public void deleteContact() {
     click(By.cssSelector("input[type='button'][value='Delete']"));
     wd.switchTo().alert().accept();
   }
-  public void editContact(int n){
-    click(By.cssSelector("a[href^='edit.php?id="+n+"']"));
+  public void editFirstContact(){
+
+    click(By.cssSelector("a[href^='edit.php?id=']"));
   }
   public void submitContactModification() {
     click(By.cssSelector("input[type='submit'][value='Update']"));

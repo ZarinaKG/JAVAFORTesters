@@ -8,7 +8,7 @@ public class ContactDeletionTest extends TestBase{
   public void testContactDeletion(){
     app.getContactHelper().getContactLists();
     int contactNumber= app.getContactHelper().getTotalNumberofContact();
-    app.getContactHelper().selectContact(contactNumber);
+    app.getContactHelper().selectFirstContact();
     app.getContactHelper().deleteContact();
   }
 }
