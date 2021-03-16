@@ -2,6 +2,7 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -9,6 +10,7 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static java.lang.Thread.sleep;
@@ -19,14 +21,16 @@ public class ContactHelper extends BaseHelper {
     super(wd);
   }
 
-  public void fillContactForm(PersonalData personalData) {
+  public void fillContactForm(PersonalData personalData, boolean creation) {
     type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
     type(By.name("lastname"),personalData.getGroup());
 
-    if (isElementPresent(By.name("new_group"))){
+    if(creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(personalData.getGroup());
     }
+    else
+      Assert.assertFalse(isElementPresent(By.name("new_group")));
   }
 
 
@@ -50,17 +54,31 @@ public class ContactHelper extends BaseHelper {
     int totalNumberOfContact = Integer.parseInt(lastContact);
     return totalNumberOfContact;
   }
-  public void selectContact(int n) {
-    click(By.cssSelector("input[type='checkbox'][value='"+n+"']"));
+  public void selectFirstContact() {
+    click(By.cssSelector("input[type='checkbox']"));
   }
   public void deleteContact() {
     click(By.cssSelector("input[type='button'][value='Delete']"));
     wd.switchTo().alert().accept();
   }
   public void editContact(int n){
-    click(By.cssSelector("a[href^='edit.php?id="+n+"']"));
+
+    click(By.cssSelector("a[href^='edit.php?id=']"));
   }
   public void submitContactModification() {
     click(By.cssSelector("input[type='submit'][value='Update']"));
+  }
+
+  public int getContactCount() {
+    List<WebElement> elements = wd.findElements(By.name("selected[]"));
+    return elements.size();
+  }
+
+  public void createContact(){
+
+    initContactCreation();
+    fillContactForm(new PersonalData("Nicole", "Mustermann","test1"), true);
+    submitContactCreation();
+    returnToHomePage();
   }
 }

@@ -4,15 +4,21 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
+import static java.lang.Thread.sleep;
+
 public class ContactDeletionTest extends TestBase{
   @Test
-  public void testContactDeletion(){
-    int before = app.getGroupHelper().getGroupCount();
+  public void testContactDeletion() throws InterruptedException {
+    int before = app.getContactHelper().getContactCount();
     app.getContactHelper().getContactLists();
     int contactNumber= app.getContactHelper().getTotalNumberofContact();
-    app.getContactHelper().selectContact(contactNumber);
+    if(contactNumber < 1){
+      app.getContactHelper().createContact();
+    }
+    app.getContactHelper().selectFirstContact();
     app.getContactHelper().deleteContact();
-    int after = app.getGroupHelper().getGroupCount();
+    sleep(5000);
+    int after = app.getContactHelper().getContactCount();
     Assert.assertEquals(after, before-1);
   }
 }
