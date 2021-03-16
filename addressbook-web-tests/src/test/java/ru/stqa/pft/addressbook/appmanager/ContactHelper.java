@@ -9,6 +9,7 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,7 +25,6 @@ public class ContactHelper extends BaseHelper {
   public void fillContactForm(PersonalData personalData, boolean creation) {
     type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
-    type(By.name("lastname"),personalData.getGroup());
 
     if(creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(personalData.getGroup());
@@ -57,13 +57,15 @@ public class ContactHelper extends BaseHelper {
   public void selectFirstContact() {
     click(By.cssSelector("input[type='checkbox']"));
   }
+  public void selectContact(int n) {
+    wd.findElements(By.cssSelector("input[type='checkbox']")).get(n).click();
+  }
   public void deleteContact() {
     click(By.cssSelector("input[type='button'][value='Delete']"));
     wd.switchTo().alert().accept();
   }
   public void editContact(int n){
-
-    click(By.cssSelector("a[href^='edit.php?id=']"));
+    wd.findElements(By.cssSelector("a[href^='edit.php?id=']")).get(n).click();
   }
   public void submitContactModification() {
     click(By.cssSelector("input[type='submit'][value='Update']"));
@@ -77,8 +79,28 @@ public class ContactHelper extends BaseHelper {
   public void createContact(){
 
     initContactCreation();
-    fillContactForm(new PersonalData("Nicole", "Mustermann","test1"), true);
+    fillContactForm(new PersonalData("Nicole", System.currentTimeMillis()  + "","test1"), true);
     submitContactCreation();
     returnToHomePage();
+  }
+
+  public void createContact(PersonalData personalData){
+
+    initContactCreation();
+    fillContactForm(personalData, true);
+    submitContactCreation();
+    returnToHomePage();
+  }
+
+  public List<PersonalData> getContactList() {
+    List<PersonalData> personalDataList = new ArrayList<>();
+    List<WebElement> elements = wd.findElement(By.id("maintable")).findElements(By.name("entry"));
+    for (WebElement element:elements){
+      List<WebElement> elementList = element.findElements(By.cssSelector("td"));
+      String id = element.findElement(By.tagName("input")).getAttribute("value");
+      PersonalData personalData = new PersonalData(id, elementList.get(2).getText(), elementList.get(1).getText(), "");
+      personalDataList.add(personalData);
+    }
+    return personalDataList;
   }
 }

@@ -37,12 +37,12 @@ public class GroupData {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     GroupData groupData = (GroupData) o;
-    return id.equals(groupData.id);
+    return Objects.equals(name, groupData.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(name);
   }
 
   public String getName() {

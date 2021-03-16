@@ -52,9 +52,12 @@ public class GroupHelper extends BaseHelper {
 
   public void createGroup(){
 
-    List<GroupData> before = getGroupList();
+    createGroup(new GroupData("test1", "test" +System.currentTimeMillis(), null));
+  }
+  public void createGroup(GroupData groupData){
+
     initGroupCreation();
-    fillGroupForm(new GroupData("test1",null, null));
+    fillGroupForm(groupData);
     submitGroupCreation();
     returnToGroupPage();
   }

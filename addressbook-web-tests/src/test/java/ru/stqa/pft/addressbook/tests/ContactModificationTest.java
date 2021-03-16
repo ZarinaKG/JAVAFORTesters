@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 public class ContactModificationTest extends TestBase {
 
@@ -13,17 +15,25 @@ public class ContactModificationTest extends TestBase {
     int before = app.getContactHelper().getContactCount();
     app.getContactHelper().getContactLists();
     int contactNumber= app.getContactHelper().getTotalNumberofContact();
-    if(contactNumber < 1){
+    List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
+    if(contactListBefore.size() < 1){
       app.getContactHelper().createContact();
+      contactListBefore = app.getContactHelper().getContactList();
     }
     //app.getContactHelper().selectContact(contactNumber-1);
     app.getContactHelper().editContact(contactNumber-1);
-    PersonalData personalData = new PersonalData("Nicole", "Mustermann1",null);
+    PersonalData personalData = new PersonalData("Nicole", System.currentTimeMillis()  + "",null);
     app.getContactHelper().fillContactForm(personalData, false);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
-    int after = app.getContactHelper().getContactCount();
-    Assert.assertEquals(after,before);
+    String idModified = contactListBefore.remove(contactNumber-1).getId();
+    personalData.setId(idModified);
+    contactListBefore.add(personalData);
+
+    List<PersonalData> contactListAfter = app.getContactHelper().getContactList();
+    Assert.assertEquals(contactListAfter.size(),contactListBefore.size());
+
+    Assert.assertEquals(new HashSet<>(contactListAfter),new HashSet<>(contactListBefore));
 
   }
 }
