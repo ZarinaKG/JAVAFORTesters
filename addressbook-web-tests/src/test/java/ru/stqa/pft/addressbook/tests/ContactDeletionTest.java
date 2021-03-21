@@ -2,7 +2,6 @@ package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
 import java.util.HashSet;
@@ -11,7 +10,7 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class ContactDeletionTest extends TestBase{
-  @Test
+  @Test (enabled=false)
   public void testContactDeletion() throws InterruptedException {
     int before = app.getContactHelper().getContactCount();
     app.getContactHelper().getContactLists();
@@ -24,7 +23,7 @@ public class ContactDeletionTest extends TestBase{
     app.getContactHelper().selectContact(contactNumber-1);
     app.getContactHelper().deleteContact();
 
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().gotoHomePage();
     int after = app.getContactHelper().getContactCount();
     Assert.assertEquals(after, before-1);
 
