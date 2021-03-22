@@ -3,16 +3,13 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
+import ru.stqa.pft.addressbook.model.Persons;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static java.lang.Thread.sleep;
 
@@ -60,12 +57,22 @@ public class ContactHelper extends BaseHelper {
   public void selectContact(int n) {
     wd.findElements(By.cssSelector("input[type='checkbox']")).get(n).click();
   }
+  public void selectContact(PersonalData personalData) {
+    wd.findElement(By.cssSelector("input[value='"+personalData.getId()+"']")).click();
+  }
   public void deleteContact() {
     click(By.cssSelector("input[type='button'][value='Delete']"));
     wd.switchTo().alert().accept();
   }
-  public void editContact(int n){
-    wd.findElements(By.cssSelector("a[href^='edit.php?id=']")).get(n).click();
+
+  public void delete(PersonalData personalData) {
+    selectContact(personalData);
+    click(By.cssSelector("input[type='button'][value='Delete']"));
+    wd.switchTo().alert().accept();
+  }
+
+  public void modify(PersonalData personalData){
+    wd.findElement(By.cssSelector("a[href^='edit.php?id="+personalData.getId()+"']")).click();
   }
   public void submitContactModification() {
     click(By.cssSelector("input[type='submit'][value='Update']"));
@@ -92,13 +99,13 @@ public class ContactHelper extends BaseHelper {
     returnToHomePage();
   }
 
-  public List<PersonalData> getContactList() {
-    List<PersonalData> personalDataList = new ArrayList<>();
+  public Persons all() {
+    Persons personalDataList = new Persons();
     List<WebElement> elements = wd.findElement(By.id("maintable")).findElements(By.name("entry"));
     for (WebElement element:elements){
       List<WebElement> elementList = element.findElements(By.cssSelector("td"));
       String id = element.findElement(By.tagName("input")).getAttribute("value");
-      PersonalData personalData = new PersonalData(id, elementList.get(2).getText(), elementList.get(1).getText(), "");
+      PersonalData personalData = new PersonalData(Integer.parseInt(id), elementList.get(2).getText(), elementList.get(1).getText(), "");
       personalDataList.add(personalData);
     }
     return personalDataList;

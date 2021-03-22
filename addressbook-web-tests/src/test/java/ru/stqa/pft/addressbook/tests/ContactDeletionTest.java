@@ -1,38 +1,38 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.PersonalData;
+import ru.stqa.pft.addressbook.model.Persons;
 
-import java.util.HashSet;
-import java.util.List;
-
-import static java.lang.Thread.sleep;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactDeletionTest extends TestBase{
-  @Test (enabled=false)
-  public void testContactDeletion() throws InterruptedException {
-    int before = app.getContactHelper().getContactCount();
-    app.getContactHelper().getContactLists();
-    int contactNumber= app.getContactHelper().getTotalNumberofContact();
-    List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
-    if(contactListBefore.size() < 1){
-      app.getContactHelper().createContact();
-      contactListBefore = app.getContactHelper().getContactList();
+
+  @BeforeMethod
+  public void ensurePreconditions(){
+    app.goTo().gotoHomePage();
+    if(app.contact().all().size() < 1){
+      app.contact().createContact();
     }
-    app.getContactHelper().selectContact(contactNumber-1);
-    app.getContactHelper().deleteContact();
+  }
+
+  @Test
+  public void testContactDeletion() throws InterruptedException {
+
+    Persons contactListBefore = app.contact().all();
+
+    PersonalData deletePerson = contactListBefore.iterator().next();
+    app.contact().delete(deletePerson);
 
     app.goTo().gotoHomePage();
-    int after = app.getContactHelper().getContactCount();
-    Assert.assertEquals(after, before-1);
+    Persons contactListAfter = app.contact().all();
 
+    assertThat(contactListAfter.size(),equalTo(contactListBefore.size() - 1));
 
-    contactListBefore.remove(contactNumber-1);
-
-    List<PersonalData> contactListAfter = app.getContactHelper().getContactList();
-    Assert.assertEquals(contactListAfter.size(),contactListBefore.size());
-
-    Assert.assertEquals(new HashSet<>(contactListAfter),new HashSet<>(contactListBefore));
+    assertThat(contactListAfter,equalTo(contactListBefore.without(deletePerson)));
   }
 }

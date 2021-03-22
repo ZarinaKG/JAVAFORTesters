@@ -1,39 +1,51 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
+import ru.stqa.pft.addressbook.model.Persons;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactModificationTest extends TestBase {
 
-  @Test (enabled=false)
-  public void testContactModification() throws InterruptedException {
-    int before = app.getContactHelper().getContactCount();
-    app.getContactHelper().getContactLists();
-    int contactNumber= app.getContactHelper().getTotalNumberofContact();
-    List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
-    if(contactListBefore.size() < 1){
-      app.getContactHelper().createContact();
-      contactListBefore = app.getContactHelper().getContactList();
+  @BeforeMethod
+  public void ensurePreconditions(){
+
+    app.goTo().GroupPage();
+    if(app.group().all().size() < 1){
+      app.group().createGroup(new GroupData().withName("test1"));
     }
-    //app.getContactHelper().selectContact(contactNumber-1);
-    app.getContactHelper().editContact(contactNumber-1);
-    PersonalData personalData = new PersonalData("Nicole", System.currentTimeMillis()  + "",null);
-    app.getContactHelper().fillContactForm(personalData, false);
-    app.getContactHelper().submitContactModification();
-    app.getContactHelper().returnToHomePage();
-    String idModified = contactListBefore.remove(contactNumber-1).getId();
-    personalData.setId(idModified);
-    contactListBefore.add(personalData);
+    app.goTo().gotoHomePage();
+    Persons contactListBefore = app.contact().all();
 
-    List<PersonalData> contactListAfter = app.getContactHelper().getContactList();
-    Assert.assertEquals(contactListAfter.size(),contactListBefore.size());
+    if(contactListBefore.size() < 1){
+      app.contact().createContact();
+    }
 
-    Assert.assertEquals(new HashSet<>(contactListAfter),new HashSet<>(contactListBefore));
+  }
+  @Test
+  public void testContactModification() throws InterruptedException {
+
+
+    Persons contactListBefore = app.contact().all();
+    PersonalData personToModify = contactListBefore.iterator().next();
+    app.contact().modify(personToModify);
+    PersonalData newPerson = new PersonalData().withName("Nicole").withSurname( System.currentTimeMillis()  + "").withGroup("test1");
+    app.contact().fillContactForm(newPerson, false);
+    app.contact().submitContactModification();
+    app.contact().returnToHomePage();
+    newPerson.withId(personToModify.getId());
+
+    Persons contactListAfter = app.contact().all();
+    assertEquals(contactListAfter.size(),contactListBefore.size());
+
+    assertThat(contactListAfter,equalTo(contactListBefore.without(personToModify).withAdded(newPerson)));
 
   }
 }

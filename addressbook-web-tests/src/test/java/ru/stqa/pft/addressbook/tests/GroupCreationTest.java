@@ -1,24 +1,22 @@
 package ru.stqa.pft.addressbook.tests;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
-
-import java.util.HashSet;
-import java.util.List;
+import ru.stqa.pft.addressbook.model.Groups;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.*;
 
 public class GroupCreationTest extends TestBase{
 
   @Test
   public void testGroupCreation() throws Exception {
     app.goTo().GroupPage();
-    List<GroupData> before = app.group().list();
+    Groups before = app.group().all();
     GroupData groupData = new GroupData().withName("test1").withHeader("test" +System.currentTimeMillis());
     app.group().createGroup(groupData);
-    List<GroupData>  after = app.group().list();
-    Assert.assertEquals(after.size(), before.size()+1);
-    before.add(groupData);
-    HashSet<GroupData> beforeSet = new HashSet<>(before);
-    Assert.assertEquals(beforeSet, new HashSet<GroupData>(after));
+    Groups  after = app.group().all();
+    assertThat(after,equalTo(
+            before.withAdded(groupData.withId(after.stream().mapToInt((g) ->g.getId()).max().getAsInt()))));
+    assertThat(after.size(),equalTo(before.size()+1));
   }
 
 }
