@@ -13,10 +13,23 @@ public class GroupCreationTest extends TestBase{
     Groups before = app.group().all();
     GroupData groupData = new GroupData().withName("test1").withHeader("test" +System.currentTimeMillis());
     app.group().createGroup(groupData);
+    assertThat(app.group().count(),equalTo(before.size()+1));
     Groups  after = app.group().all();
     assertThat(after,equalTo(
             before.withAdded(groupData.withId(after.stream().mapToInt((g) ->g.getId()).max().getAsInt()))));
-    assertThat(after.size(),equalTo(before.size()+1));
+
+  }
+
+  @Test
+  public void testBadGroupCreation() throws Exception {
+    app.goTo().GroupPage();
+    Groups before = app.group().all();
+    GroupData groupData = new GroupData().withName("test1'").withHeader("test" +System.currentTimeMillis());
+    app.group().createGroup(groupData);
+    assertThat(app.group().count(),equalTo(before.size()));
+    Groups  after = app.group().all();
+    assertThat(after,equalTo(before));
+
   }
 
 }

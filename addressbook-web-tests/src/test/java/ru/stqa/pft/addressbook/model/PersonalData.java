@@ -7,6 +7,50 @@ public class PersonalData {
   private  String name;
   private  String surname;
   private String group;
+  private String homePhone;
+  private String mobilePhone;
+  private String workPhone;
+  private String address;
+  private String addressSecondary;
+  private String privateEmail;
+  private String workEmail;
+  private String hobbyEmail;
+
+  public String getPrivateEmail() {
+    return privateEmail;
+  }
+
+  public String getWorkEmail() {
+    return workEmail;
+  }
+
+  public String getHobbyEmail() {
+    return hobbyEmail;
+  }
+
+  public String getAddressSecondary() {
+    return addressSecondary;
+  }
+  public PersonalData withHobbyEmail(String hobbyEmail) {
+    this.hobbyEmail = hobbyEmail;
+    return this;
+  }
+
+
+  public PersonalData withPrivateEmail(String privateEmail) {
+    this.privateEmail = privateEmail;
+    return this;
+  }
+
+  public PersonalData withWorkEmail(String workEmail) {
+    this.workEmail = workEmail;
+    return this;
+  }
+
+  public PersonalData withAddressSecondary(String addressSecondary) {
+    this.addressSecondary = addressSecondary;
+    return this;
+  }
 
   public PersonalData() {
   }
@@ -56,9 +100,47 @@ public class PersonalData {
     return this;
   }
 
+  public PersonalData  withHomePhone(String homePhone) {
+    this.homePhone = homePhone;
+    return this;
+  }
+
+  public PersonalData withMobilePhone(String mobilePhone) {
+    this.mobilePhone = mobilePhone;
+    return this;
+  }
+
+  public PersonalData  withWorkPhone(String workPhone) {
+    this.workPhone = workPhone;
+    return this;
+  }
   public String getGroup() {
     return group;
   }
+
+  public String getHomePhone() {
+    return homePhone;
+  }
+
+  public String getMobilePhone() {
+    return mobilePhone;
+  }
+
+  public String getWorkPhone() {
+    return workPhone;
+  }
+
+  public String  getAddress() {
+    return address;
+
+  }
+
+  public PersonalData withAddress(String address) {
+    this.address = address;
+    return this;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {

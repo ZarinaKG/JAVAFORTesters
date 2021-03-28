@@ -26,7 +26,7 @@ public class ContactCreationTest extends TestBase{
 
   }
 
-  @Test
+  @Test(enabled = false)
   public void testContactCreation() throws Exception {
 
 
@@ -40,4 +40,6 @@ public class ContactCreationTest extends TestBase{
 
     assertThat(after, equalTo( before.withAdded(after.stream().max((p1, p2) -> Integer.compare(p1.getId(), p2.getId())).get())));
   }
+
+
 }
