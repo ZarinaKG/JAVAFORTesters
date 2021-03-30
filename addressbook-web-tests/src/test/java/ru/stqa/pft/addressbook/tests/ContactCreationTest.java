@@ -1,11 +1,15 @@
 package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
 import java.util.Date;
 
 public class ContactCreationTest extends TestBase{
+
+
 
   @Test
   public void testContactCreation() throws Exception {

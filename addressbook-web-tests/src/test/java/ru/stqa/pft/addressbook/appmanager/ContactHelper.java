@@ -24,7 +24,6 @@ public class ContactHelper extends BaseHelper {
   public void fillContactForm(PersonalData personalData, boolean creation) {
     type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
-    type(By.name("lastname"),personalData.getGroup());
 
     if(creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(personalData.getGroup());
@@ -63,7 +62,7 @@ public class ContactHelper extends BaseHelper {
   }
   public void editContact(int n){
 
-    click(By.cssSelector("a[href^='edit.php?id=']"));
+    wd.findElements(By.cssSelector("a[href^='edit.php?id=']")).get(n).click();
   }
   public void submitContactModification() {
     click(By.cssSelector("input[type='submit'][value='Update']"));
