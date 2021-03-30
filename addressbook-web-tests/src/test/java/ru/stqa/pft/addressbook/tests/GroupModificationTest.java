@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
@@ -8,13 +9,19 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GroupModificationTest extends TestBase{
-  @Test
-  public void testGroupModification(){
+
+  @BeforeMethod
+  public void ensurePreconditions() {
     app.getNavigationHelper().gotoGroupPage();
     List<GroupData> before = app.getGroupHelper().getGroupList();
     if(before.size()<1){
       app.getGroupHelper().createGroup();
     }
+  }
+  @Test
+  public void testGroupModification(){
+    app.getNavigationHelper().gotoGroupPage();
+    List<GroupData> before = app.getGroupHelper().getGroupList();
     app.getGroupHelper().selectGroup(before.size()-1);
     app.getGroupHelper().initGroupModification();
     GroupData group = new GroupData(before.get(before.size()-1).getId(),"test1", "test" +System.currentTimeMillis(), "test3");

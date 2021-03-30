@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.PersonalData;
 
@@ -10,16 +11,19 @@ import java.util.List;
 
 public class ContactModificationTest extends TestBase {
 
-  @Test
-  public void testContactModification() throws InterruptedException {
-    int before = app.getContactHelper().getContactCount();
-    app.getContactHelper().getContactLists();
-    int contactNumber= app.getContactHelper().getTotalNumberofContact();
+  @BeforeMethod
+  public void ensurePreconditions(){
     List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
     if(contactListBefore.size() < 1){
       app.getContactHelper().createContact();
-      contactListBefore = app.getContactHelper().getContactList();
     }
+  }
+
+  @Test
+  public void testContactModification() throws InterruptedException {
+    List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
+    app.getContactHelper().getContactLists();
+    int contactNumber= app.getContactHelper().getTotalNumberofContact();
     //app.getContactHelper().selectContact(contactNumber-1);
     app.getContactHelper().editContact(contactNumber-1);
     PersonalData personalData = new PersonalData("Nicole", System.currentTimeMillis()  + "",null);

@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.PersonalData;
@@ -11,6 +12,14 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class ContactDeletionTest extends TestBase{
+
+  @BeforeMethod
+  public void ensurePreconditions(){
+    List<PersonalData> contactListBefore = app.getContactHelper().getContactList();
+    if(contactListBefore.size() < 1){
+      app.getContactHelper().createContact();
+    }
+  }
   @Test
   public void testContactDeletion() throws InterruptedException {
     int before = app.getContactHelper().getContactCount();
