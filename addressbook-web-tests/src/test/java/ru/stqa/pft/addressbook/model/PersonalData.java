@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.model;
 
+import java.io.File;
 import java.util.Objects;
 
 public class PersonalData {
@@ -15,6 +16,12 @@ public class PersonalData {
   private String privateEmail;
   private String workEmail;
   private String hobbyEmail;
+
+  public File getPhoto() {
+    return photo;
+  }
+
+  private File photo;
 
   public String getPrivateEmail() {
     return privateEmail;
@@ -140,6 +147,10 @@ public class PersonalData {
     return this;
   }
 
+  public PersonalData withPhoto(File photo) {
+    this.photo = photo;
+    return this;
+  }
 
 
   @Override
