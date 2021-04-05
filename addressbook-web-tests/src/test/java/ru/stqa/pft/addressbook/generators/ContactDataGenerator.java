@@ -6,8 +6,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
-import ru.stqa.pft.addressbook.model.GroupData;
-
+import ru.stqa.pft.addressbook.model.PersonalData;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,9 +14,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDataGenerator {
+public class ContactDataGenerator {
 
-  @Parameter(names= "-c", description="Group count")
+  @Parameter(names= "-c", description="Contact count")
   public int count;
 
   @Parameter(names = "-f", description = "Target file")
@@ -27,7 +26,7 @@ public class GroupDataGenerator {
   public String format;
 
   public static void main(String[] args) throws IOException {
-    GroupDataGenerator generator = new GroupDataGenerator();
+    ContactDataGenerator generator = new ContactDataGenerator();
     JCommander jCommander = new JCommander(generator);
     try {
       jCommander.parse(args);
@@ -36,19 +35,18 @@ public class GroupDataGenerator {
      return;
     }
     generator.run();
-
   }
 
   private void run() throws IOException {
-    List<GroupData> groups = generateGroups(count);
+    List<PersonalData> contacts = generateContacts(count);
     if(format.equals("csv")){
-      saveAsCSV(groups,new File(file));
+      saveAsCSV(contacts,new File(file));
     }
     else if(format.equals("xml")){
-      saveAsXML(groups,new File(file));
+      saveAsXML(contacts,new File(file));
     }
     else if(format.equals("json")){
-      saveAsJSON(groups,new File(file));
+      saveAsJSON(contacts,new File(file));
     }
     else {
       System.out.println("Unrecognized format " +format);
@@ -56,38 +54,38 @@ public class GroupDataGenerator {
 
   }
 
-  private void saveAsJSON(List<GroupData> groups, File file) throws IOException {
+  private void saveAsJSON(List<PersonalData> contacts, File file) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-    String json = gson.toJson(groups);
+    String json = gson.toJson(contacts);
     Writer writer = new FileWriter(file);
     writer.write(json);
     writer.close();
   }
 
-  private void saveAsXML(List<GroupData> groups, File file) throws IOException {
+  private void saveAsXML(List<PersonalData> contacts, File file) throws IOException {
     XStream xstream = new XStream();
-    xstream.processAnnotations(GroupData.class);
-   // xstream.alias("group",GroupData.class);
-    String xml = xstream.toXML(groups);
+    xstream.processAnnotations(PersonalData.class);
+   // xstream.alias("contact",PersonalData.class);
+    String xml = xstream.toXML(contacts);
     Writer writer = new FileWriter(file);
     writer.write(xml);
     writer.close();
   }
 
-  private void saveAsCSV(List<GroupData> groups, File file) throws IOException {
+  private void saveAsCSV(List<PersonalData> contacts, File file) throws IOException {
     System.out.println(new File(".").getAbsolutePath());
     Writer writer = new FileWriter(file);
-    for(GroupData group: groups){
-      writer.write(String.format("%s;%s;%s\n",group.getName(), group.getHeader(), group.getFooter()));
+    for(PersonalData contact: contacts){
+      writer.write(String.format("%s;%s;%s\n",contact.getName(), contact.getSurname(), contact.getHomePhone()));
     }
     writer.close();
   }
 
-  private List<GroupData> generateGroups(int count) {
-    List<GroupData> groups = new ArrayList<GroupData>();
+  private List<PersonalData> generateContacts(int count) {
+    List<PersonalData> contacts = new ArrayList<PersonalData>();
     for(int i = 0; i<count; i++){
-      groups.add(new GroupData().withName(String.format("test %s", i)).withHeader(String.format("header %s",i)).withFooter(String.format("footer %s",i)));
+      contacts.add(new PersonalData().withName(String.format("contact %s",i)).withSurname(String.format("name %s",i)).withHomePhone(String.format("7878 76768 676 %s",i)));
     }
-    return groups;
+    return contacts;
   }
 }
