@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class PersonalData {
   private int id;
-  private  String name;
-  private  String surname;
+  private String name;
+  private String surname;
   private String group;
   private String homePhone;
   private String mobilePhone;
@@ -16,11 +16,6 @@ public class PersonalData {
   private String privateEmail;
   private String workEmail;
   private String hobbyEmail;
-
-  public File getPhoto() {
-    return photo;
-  }
-
   private File photo;
 
   public String getPrivateEmail() {
@@ -147,6 +142,9 @@ public class PersonalData {
     return this;
   }
 
+  public File getPhoto() {
+    return photo;
+  }
   public PersonalData withPhoto(File photo) {
     this.photo = photo;
     return this;

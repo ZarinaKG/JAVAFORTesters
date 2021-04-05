@@ -8,6 +8,7 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.PersonalData;
 import ru.stqa.pft.addressbook.model.Persons;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ public class ContactHelper extends BaseHelper {
   public void fillContactForm(PersonalData personalData, boolean creation) {
     type(By.name("firstname"),personalData.getName());
     type(By.name("lastname"),personalData.getSurname());
+    attach(By.name("photo"),personalData.getPhoto());
 
     if(creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(personalData.getGroup());
@@ -76,11 +78,13 @@ public class ContactHelper extends BaseHelper {
     String hobbyEmail = wd.findElement(By.name("email3")).getAttribute("value");
     String address = wd.findElement(By.name("address")).getAttribute("value");
     String address2 = wd.findElement(By.name("address2")).getAttribute("value");
+    File photo = new File("src/resources/test.jpg");
     wd.navigate().back();
     return new PersonalData().withId(contact.getId()).withName(firstname).withSurname(lastname)
             .withHomePhone(homePhone).withMobilePhone(mobilePhone).withWorkPhone(workPhone)
             .withPrivateEmail(privateEmail).withWorkEmail(workEmail).withHobbyEmail(hobbyEmail)
-            .withAddress(address).withAddressSecondary(address2);
+            .withAddress(address).withAddressSecondary(address2).withPhoto(photo);
+
   }
 
 
@@ -133,8 +137,8 @@ public class ContactHelper extends BaseHelper {
 
   public Persons all() {
     Persons personalDataList = new Persons();
-    List<WebElement> elements = wd.findElement(By.id("maintable")).findElements(By.name("entry"));
-   /* for (WebElement element:elements){
+   /* List<WebElement> elements = wd.findElement(By.id("maintable")).findElements(By.name("entry"));
+     for (WebElement element:elements){
       List<WebElement> elementList = element.findElements(By.cssSelector("td"));
       String id = element.findElement(By.tagName("input")).getAttribute("value");
       PersonalData personalData = new PersonalData(Integer.parseInt(id), elementList.get(2).getText(), elementList.get(1).getText(), "");
@@ -142,7 +146,7 @@ public class ContactHelper extends BaseHelper {
     }
     */
 
-    List<WebElement> rows = wd.findElements(By.name("entry"));
+    List<WebElement> rows = wd.findElement(By.id("maintable")).findElements(By.name("entry"));
     for(WebElement row: rows){
       List<WebElement> cells = row.findElements(By.tagName("td"));
       int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
@@ -152,9 +156,12 @@ public class ContactHelper extends BaseHelper {
       String address = cells.get(3).getText();
       String [] eMails= cells.get(4).getText().split("\n");
       personalDataList.add(new PersonalData().withId(id).withName(firstname).withSurname(lastname)
-              .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2])
-              .withPrivateEmail(eMails[0]).withWorkEmail(eMails[1]).withHobbyEmail(eMails[2])
+             // .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2])
+             // .withPrivateEmail(eMails[0]).withWorkEmail(eMails[1]).withHobbyEmail(eMails[2])
+              .withHomePhone(phones[0])
+              .withPrivateEmail(eMails[0])
               .withAddress(address));
+
     }
     return personalDataList;
   }
