@@ -2,16 +2,19 @@
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 0</name>
     <surname>name 0</surname>
+    <group>test 0</group>
     <homePhone>7878 76768 676 0</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 1</name>
     <surname>name 1</surname>
+    <group>test 1</group>
     <homePhone>7878 76768 676 1</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 2</name>
     <surname>name 2</surname>
+    <group>test 2</group>
     <homePhone>7878 76768 676 2</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
 </list>
