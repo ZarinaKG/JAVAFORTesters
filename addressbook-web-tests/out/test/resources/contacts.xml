@@ -1,19 +1,19 @@
 <list>
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 0</name>
-    <surname>name 8410c932-364a-4f2a-87dd-29a5f8021f8c</surname>
+    <surname>name 0</surname>
     <group>test 0</group>
     <homePhone>7878 76768 676 0</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 1</name>
-    <surname>name a44986da-ef99-4dc4-a088-691a1923c9a2</surname>
+    <surname>name 1</surname>
     <group>test 1</group>
     <homePhone>7878 76768 676 1</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
   <ru.stqa.pft.addressbook.model.PersonalData>
     <name>contact 2</name>
-    <surname>name 1c803e7a-be5c-45f7-b965-5ce20b079fcd</surname>
+    <surname>name 2</surname>
     <group>test 2</group>
     <homePhone>7878 76768 676 2</homePhone>
   </ru.stqa.pft.addressbook.model.PersonalData>
